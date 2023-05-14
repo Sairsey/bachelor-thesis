@@ -235,6 +235,7 @@
 	\chapter*{Abstract}
 	\endgroup %after chapter in case of inline using
 	\thispagestyle{empty}%
+	\addcontentsline{toc}{chapter}{ABSTRACT} % вносим в содержание
 }
 
 
@@ -329,7 +330,7 @@
 
 \ifnumequal{\value{chapstyle}}{1}{%
     \chapterstyle{SPbPUstylechapname}
-    \renewcommand*{\cftchaptername}{Глава\space} % будет вписано слово Глава перед каждым номером раздела в оглавлении
+    \renewcommand*{\cftchaptername}{ГЛАВА\space} % будет вписано слово Глава перед каждым номером раздела в оглавлении
 }{}% вместо Chapter \chaptername
 
 %%% Интервалы между заголовками

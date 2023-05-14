@@ -2,6 +2,8 @@
 %%\input{my_folder/summary_settings} 
 \chapter*[Count-me]{Реферат} % * - не нумеруем
 \thispagestyle{empty}% удаляем параметры страницы
+\addcontentsline{toc}{chapter}{РЕФЕРАТ} % вносим в содержание
+
 %\setcounter{sumPageFirst}{\value{page}}
 %sumPageFirst \arabic{sumPageFirst}
 %
@@ -26,14 +28,32 @@
 \formbytotal{myappendices}{приложен}{ие}{ия}{ий}%.  
 
 %\noindent
-{\MakeUppercase{Ключевые слова: \keywordsRu}.}\footnote{Всего \textbf{слов}: от 3 до 15. Всего \textbf{слов и словосочетаний}: от 3 до 5. Оформляются в именительном падеже множественного числа (или в единственном числе, если нет другой формы), оформленных по правилам русского языка. \textit{Внимание! Размещение сноски после точки является примером как запрещено оформлять сноски.}} % Ключевые слова из renames.tex
+{\MakeUppercase{Ключевые слова: \keywordsRu}.}%\footnote{Всего \textbf{слов}: от 3 до 15. Всего \textbf{слов и словосочетаний}: от 3 до 5. Оформляются в именительном падеже множественного числа (или в единственном числе, если нет другой формы), оформленных по правилам русского языка. \textit{Внимание! Размещение сноски после точки является примером как запрещено оформлять сноски.}} % Ключевые слова из renames.tex
 
-Тема выпускной квалификационной работы: <<\thesisTitle>>\footnote{Реферат \textbf{должен содержать}: предмет, тему, цель ВКР; метод или методологию проведения ВКР: результаты ВКР: область применения результатов ВКР; выводы.}.
+Тема выпускной квалификационной работы: <<\thesisTitle>>%\footnote{Реферат \textbf{должен содержать}: предмет, тему, цель ВКР; метод или методологию проведения ВКР: результаты ВКР: область применения результатов ВКР; выводы.}.
 
+%%
+%%
+%% Реферат ОТ 1000 ДО 1500 знаков на русский или английский текст
+%%
+%Реферат должен содержать:
+%- предмет, тему, цель ВКР;
+%- метод или методологию проведения ВКР:
+%- результаты ВКР:
+%- область применения результатов ВКР;
+%- выводы.
 
-\abstractRu\footnote{ОТ 1000 ДО 1500 печатных знаков (ГОСТ Р 7.0.99-2018 СИБИД) на русский или английский текст. Текст реферата повторён дважды на русском и английском языке для демонстрации подхода к нумерации страниц.} % Аннотация из renames.tex
+Данная работа посвящена разработке и реализации архитектуры конвейера отрисовки трехмерной компьютерной графики, снижающей нагрузку на центральный процессор, тем самым увеличивая объем ресурсов компьютера, доступных для разработчиков ПО.
 
+В качестве основной демонстрационной сцены используется совокупность различных трехмерных геометрических объектов, освещённых при помощи подхода, основанного на физической модели микрограней. Весь исходный код проекта написан на языке C++ с применением графической библиотеки DirectX 12. Средством для программирования шейдеров является HLSL.
 
+Наиболее значимым результатом является система для вывода трёхмерных сцен, количество вызовов отрисовки в которой не зависит от числа выводимых объектов. В ходе работы был также разработан гибридный алгортм отрисовки прозрачных объектов, который не требует их упорядочивания.
+
+Предложенная архитектура пригодна для применения в современных графических приложениях и может быть развита в дальнейшем.
+
+%\abstractRu%\footnote{ОТ 1000 ДО 1500 печатных знаков (ГОСТ Р 7.0.99-2018 СИБИД) на русский или английский текст. Текст реферата повторён дважды на русском и английском языке для демонстрации подхода к нумерации страниц.} % Аннотация из renames.tex
+
+\newpage
 
 \printTheAbstract % не удалять
 
@@ -47,12 +67,19 @@
 {\MakeUppercase{Keywords: \keywordsEn}.} % Ключевые слова из renames.tex 
 	
 The subject of the graduate qualification work is <<\thesisTitleEn>>.
+
+The work aims to develop and implement graphics pipeline architecture, which will reduce usage of CPU and thereby increase amount of resources avaliable to developers.
+
+Main demonstration scene is a set of different geometric shapes, which uses physically-based lighting with microfacet model. All source code of project is written in C++ using the DirectX 12 graphics library. HLSL is used for shaders code.
+
+The most significant result is a system for rendering three-dimentional scenes, the number of draw calls in which does not depend on the number of rendered objects. In the course of the work, a hybrid algorithm for rendering transparent objects was also developed, which does not require object sorting.
+
+The proposed architecture is suitable for use in modern graphics applications and can be further developed to obtain more efficient results.
 	
-	
-\abstractEn % Аннотация из renames.tex
+%\abstractEn % Аннотация из renames.tex
 	
 
-
+\newpage
 %% Не менять - Do not modify
 \thispagestyle{empty}
 %\setcounter{sumPageLast}{\value{page}} %сохранили номер последней страницы Задания
