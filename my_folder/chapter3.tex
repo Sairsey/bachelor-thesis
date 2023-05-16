@@ -5,97 +5,11 @@
 	\item Будут разработаны и реализованы алгоритмы, которые можно будет использовать другим графичеким системам, если они возмут за основу предлагаемую архитектуру
 \end{enumerate}
 
-\section{Непрямая отрисовка} \label{ch3:indirect_draw}
-	Как было уже упомянуто ранее, основным способом отправки команд на графический процессор считается сбор "списка команд" на центральном процессоре и последующая передача получившегося "списка" на графический процессор. Однако современных API добавилась возможность дополнить вышеупомянутый "список команд" дополнительным массивом команд прямо из графического процессора. Эта технология называется непрямой отрисовкой и в DirectX 12 за эту технологию реализует команда ExecuteIndirect. 
-	
-	Для того чтобы воспользоваться командой ExecuteIndirect, ей необходимо передать следующие параметы
-	\begin{enumerate}[1.] 
-		\item "Сигнатуру вызова" - перечинь команд которые необходимо вызвать для каждого рисуемого объекта. Обязательно должна оканчиваться командой отрисовки.
-		\item Буфер из видеопамяти с параметрами(которые требует сигнатура), для каждого выводимого объекта.
-		\item Количество раз, сколько нужно отрисовать объекты(можно указать число, а можно указать буфер из видеопамяти).
-	\end{enumerate}
-	
-	Таким образом, простейший алгоритм отрисовки любого числа объектов будет выглядеть так: (\firef{alg:simpleIndirect})
-	
-	\begin{algorithm} %[h]
-		\SetKwFunction{algoSimpleIndirectPseudocode}{} 
-		\SetKwProg{myalg}{Algorithm}{}{} %write in 2nd agrument <<Algorithm>>, <<Procedure>> etc
-		\nonl\myalg{\algoSimpleIndirectPseudocode}{
-			Загрузить все объекты
-			
-			Создать сигнатуру
-			
-			Создать буфер ($SRVbuffer$) и сохранить в него информацию для каждого объекта(например указатель на буфер вершин и преобразование) 
 
-			Установить формат хранения вершин
+\input{my_folder/chapter3_indirect.tex} % Неявная отрисовка
+\input{my_folder/chapter3_common_structure.tex} % Общая структура
+\input{my_folder/chapter3_prepass.tex} % Prepass	
 
-			Установить формат соединения вершин
-
-			Установить программу-шейдер, для отрисовки
-
-			
-			\For {each frame}{
-				
-				ExecuteIndirect($SRVbuffer$)
-			}	
-		}
-		\caption{Примерный псевдокод простейшего алгоритма использующего непрямую отрисовку}\label{alg:simpleIndirect}
-	\end{algorithm}
-	\FloatBarrier
-	
-	Таким образом мы добились поставленной цели, и количество команд в "списке команд" при данном подходе действительно константно относительно числа объектов. Но на практике этот алгоритм будет работать хуже, чем традиционный. Причина в том, что традиционный подход позволяет заранее отбросить отрисовку части объектов, просто не добавив их в "список команд", а данный (\firef{alg:simpleIndirect}) алгоритм не даёт такой возможности. Однако, это можно исправить, если буфер с параметрами ($SRVbuffer$) мог меняться. Это приводит нас к следующему алгоритму (\firef{alg:IndirectWithCull})
-	
-	\begin{algorithm} %[h]
-		\SetKwFunction{algoIndirectWithCullPseudocode}{} 
-		\SetKwProg{myalg}{Algorithm}{}{} %write in 2nd agrument <<Algorithm>>, <<Procedure>> etc
-		\nonl\myalg{\algoIndirectWithCullPseudocode}{
-			Загрузить все объекты
-			
-			Создать сигнатуру
-			
-			Создать буфер ($SRVbuffer$) и сохранить в него информацию для каждого объекта(например указатель на буфер вершин и преобразование)
-			
-			Cоздать буфер ($UAVbuffer$), совпадающий размером с предыдущим, 
-			
-			Cоздать счётчик ($UAVcounter$) 
-
-			Установить формат хранения вершин
-
-			Установить формат соединения вершин
-			
-			\For {each frame}{
-				
-				Установить программу-шейдер, для обработки команд
-				
-				Обнулить счётчик ($UAVcounter$) 
-				
-				Запустить вычислительный шейдер, который скопирует из $SRVbuffer$ в $UAVbuffer$ те парамеры нужных команд и изменит $UAVcounter$ на значение равное числу скопированных команд
-				
-				Установить программу-шейдер, для отрисовки
-				
-				ExecuteIndirect($UAVbuffer$, $UAVcounter$)
-			}	
-		}
-		\caption{Примерный псевдокод алгоритма использующего непрямую отрисовку с отбрасыванием команд}\label{alg:IndirectWithCull}
-	\end{algorithm}
-	\FloatBarrier
-	
-	Отметим преимущества и недостатки описанного алгоритма(\firef{alg:IndirectWithCull}):
-	\begin{enumerate}[1.] 
-		\item Преимущество: число вызовов отрисовки в "списке команд" всё ещё является константным, относительно числа объектов
-		\item Преимущество: число вызовов отрисовки на графическом процессоре не меняется(см \ref{ch2:Programmable-Vertex-Pulling})
-		\item Преимущество: используются стандартные буферы, а значит оптимизации программы-драйвера не перестанут работать (см \ref{ch2:Programmable-Vertex-Pulling})
-		\item Преимущество: нет проблем с фрагментацией (см \ref{ch2:Programmable-Vertex-Pulling})
-		\item Преимущество: проверка на отбрасывание будет происходить параллельно. А так как обычно графический процессор обладает большим числом вычислительных ядер чем центральный процессор, предложенный алгоритм будет работать быстрее.
-		\item Недостаток: невозможно установить порядок, в котором объекты будут отрисовываться.
-	\end{enumerate}
-		
-\section{Общая структура} \label{ch3:pipeline_struct}
-\section{Этап Pre-pass} \label{ch3:pre_pass}
-	\subsection{Frustum culling} \label{ch3:pre_pass:frustum}
-	\subsection{Depth pre-pass} \label{ch3:pre_pass:depth}
-	\subsection{Occlusion culling} \label{ch3:pre_pass:occlusion}
-	\subsection{Построение карт теней} \label{ch3:pre_pass:shadow_maps}
 \section{Этап Render pass} \label{ch3:render_pass}
 	\subsection{Непрозрачные объекты} \label{ch3:render_pass:opaque}
 		\subsubsection{Physically based render} \label{ch3:render_pass:opaque:pbr}
@@ -105,9 +19,9 @@
 		\subsubsection{Order Independent Transparency} \label{ch3:render_pass:transparents:oit}
 		\subsubsection{Weighted Blended Order Independent Transparency} \label{ch3:render_pass:transparents:wboit}
 		\subsubsection{Hybrid Order Independent Transparency} \label{ch3:render_pass:transparents:hybrid_oit}
+		
 \section{Этап Post-process} \label{ch3:post_process}
 	\subsection{Tonemapping, HDR и LDR} \label{ch3:post_process:hdr_ldr_tonemapping}
-	%\subsection{} \label{ch3:render_pass:skybox}
 \section{Выводы} \label{ch3:conclusion}
 
 %% Вспомогательные команды - Additional commands
