@@ -7,22 +7,14 @@
 
 
 \input{my_folder/chapter3_indirect.tex} % Неявная отрисовка
+
 \input{my_folder/chapter3_common_structure.tex} % Общая структура
+
 \input{my_folder/chapter3_prepass.tex} % Prepass	
 
-\section{Этап Render pass} \label{ch3:render_pass}
-	\subsection{Непрозрачные объекты} \label{ch3:render_pass:opaque}
-		\subsubsection{Physically based render} \label{ch3:render_pass:opaque:pbr}
-		\subsubsection{Image based lighting} \label{ch3:render_pass:opaque:ibl}
-	\subsection{Skybox} \label{ch3:render_pass:skybox}
-	\subsection{Полу-прозрачные объекты} \label{ch3:render_pass:transparents}
-		\subsubsection{Order Independent Transparency} \label{ch3:render_pass:transparents:oit}
-		\subsubsection{Weighted Blended Order Independent Transparency} \label{ch3:render_pass:transparents:wboit}
-		\subsubsection{Hybrid Order Independent Transparency} \label{ch3:render_pass:transparents:hybrid_oit}
-		
-\section{Этап Post-process} \label{ch3:post_process}
-	\subsection{Tonemapping, HDR и LDR} \label{ch3:post_process:hdr_ldr_tonemapping}
-\section{Выводы} \label{ch3:conclusion}
+\input{my_folder/chapter3_renderpass.tex} % Render pass
+
+\input{my_folder/chapter3_postprocess.tex} % Render pass
 
 %% Вспомогательные команды - Additional commands
 %
