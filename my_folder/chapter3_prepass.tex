@@ -10,10 +10,10 @@
 	\begin{enumerate}[1.]
 		\item All - буфер, в котором находятся параметры для всех объектов, причутствующих на сцене.
 		\item OpaqueAll - буфер, в котором находятся параметры всех непрозрачных объектов.
-		\item TransparentAll - буфер, в котором находятся параметры всех прозрачных объектов.
+		\item TransparentAll - буфер, в котором находятся параметры всех полупрозрачных объектов.
 		\item OpaqueFrustum - буфер, в котором находятся параметры всех непрозрачных объектов, пересекающих пирамиду видимости.
 		\item OpaqueCulled - буфер, в котором находятся параметры всех непрозрачных объектов, видимых пользователю.
-		\item TransparentCulled - буфер, в котором находятся параметры всех прозрачных объектов, видимых пользователю.
+		\item TransparentCulled - буфер, в котором находятся параметры всех полупрозрачных объектов, видимых пользователю.
 	\end{enumerate}
 	
 	Основной задачей этапа Pre-pass является заполнение всех вышеописанных буферов (кроме All). Разберём подэтапы данного этапа:
@@ -40,14 +40,14 @@
 		\begin{equation} % \tag{S} % tag - вписывает свой текст 
 			\label{eq:frustum_plane}
 			\begin{multlined}
-				A_i * x + B_i * y + C_i * z + D = 0, \forallAlt 1 \le i \le 6 
+				\forallAlt 1 \le i \le 6 \; A_i * x + B_i * y + C_i * z + D = 0
 			\end{multlined}
 		\end{equation}
 		
 		\begin{equation} % \tag{S} % tag - вписывает свой текст 
 			\label{eq:aabb_points}
 			\begin{multlined}
-				{x_j, y_j, z_j} \forallAlt 1 \le j \le 8 
+				\forallAlt 1 \le j \le 8 \; \vec{p_j} = \{x_j, y_j, z_j\}
 			\end{multlined}
 		\end{equation}
 		
@@ -56,7 +56,7 @@
 		\begin{equation} % \tag{S} % tag - вписывает свой текст 
 			\label{eq:frustum_check}
 			\begin{multlined}
-				\existsAlt i  \forallAlt j A_i * x_j + B_i * y_j + C_i * z_j + D < 0
+				\existsAlt i \forallAlt j \; A_i * x_j + B_i * y_j + C_i * z_j + D < 0
 			\end{multlined}
 		\end{equation}
 				
